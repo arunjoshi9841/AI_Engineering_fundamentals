@@ -160,7 +160,7 @@ The application then validates the schema and uses deterministic rules to route 
 
 ## Next
 
-Next: Embeddings and Semantic Search. It explains how AI systems represent meaning for retrieval instead of generating text directly.
+Next: [Embeddings and Semantic Search](../retrieval/embeddings-and-semantic-search.md). It explains how AI systems represent meaning for retrieval instead of generating text directly.
 
 ## References
 

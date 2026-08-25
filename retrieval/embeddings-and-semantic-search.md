@@ -158,7 +158,7 @@ The application still needs to show the actual article and may later combine thi
 
 ## Next
 
-Next: Sparse, Dense, and Hybrid Retrieval. It explains why semantic search should often be combined with keyword search and reranking.
+Next: [Sparse, Dense, and Hybrid Retrieval](sparse-dense-and-hybrid-retrieval.md). It explains why semantic search should often be combined with keyword search and reranking.
 
 ## Go Deeper
 

@@ -1,18 +1,20 @@
 # Sparse, Dense, and Hybrid Retrieval
 
-This builds on [Embeddings and Semantic Search](embeddings-and-semantic-search.md). Dense retrieval finds related meaning. It does not replace keyword search.
+In [Embeddings and Semantic Search](embeddings-and-semantic-search.md), an embedding placed related text near each other in a vector space. That gave us **dense retrieval**, or semantic search: a way to find a relevant passage even when it uses different words.
+
+Semantic similarity is valuable, but it does not replace exact-term matching. This page adds **sparse retrieval**, which searches the literal terms in a query, and then combines both methods into hybrid retrieval.
 
 ## The Problem
 
-Different queries need different kinds of matching.
+Embeddings allow a search system to recognize that "recover account access" and "reset my login" express a related idea. But a vector search ranks semantic neighbors, not necessarily the document containing an exact string.
 
-For a search such as `ERR_CONNECTION_RESET`, an invoice number, or a product SKU, exact terms are the strongest signal. For "my internet connection keeps dropping," a document that says "network interruptions" may be relevant even though it shares none of the user's words.
+For `ERR_CONNECTION_RESET`, an invoice number, or a product SKU, the exact terms are the strongest signal. For "my internet connection keeps dropping," a document that says "network interruptions" may be relevant even though it shares none of the user's words.
 
-No single retrieval method handles both cases reliably. A production search system needs to preserve exact matches while also handling paraphrase and broader meaning.
+Dense retrieval handles the second query well. Lexical, or sparse, retrieval handles the first well. No single method handles both cases reliably, so a production system often preserves exact matches while also handling paraphrase and broader meaning.
 
 ## Mental Model
 
-Think of sparse and dense retrieval as two reviewers with different strengths.
+The prior lesson's embedding index powers the dense reviewer. Sparse retrieval adds a separate reviewer that reads the query literally.
 
 ```text
 Query: "database connection timeout"
@@ -31,7 +33,7 @@ Hybrid retrieval asks both reviewers, merges their ranked lists, and may rerank 
 
 A typical hybrid pipeline has five stages:
 
-1. Build a sparse index over document terms and a dense vector index over the same searchable units.
+1. Build the dense vector index from [Embeddings and Semantic Search](embeddings-and-semantic-search.md) and a sparse index over the same searchable units.
 2. Run the query against both indexes, with the same metadata and permission filters.
 3. Merge the two ranked candidate lists.
 4. Optionally rerank the merged candidates with a model that reads each query-document pair together.
@@ -57,7 +59,7 @@ Sparse retrieval is excellent for exact names, identifiers, error messages, tech
 
 ### Dense Retrieval
 
-Dense retrieval embeds a query and each document into vectors, then ranks the closest vectors. It can retrieve paraphrases and conceptually related text without matching the same words.
+Dense retrieval is the semantic search introduced in [Embeddings and Semantic Search](embeddings-and-semantic-search.md): it embeds a query and each document into vectors, then ranks the closest vectors. It can retrieve paraphrases and conceptually related text without matching the same words.
 
 It is useful for natural-language questions and varied wording. It can be weak when one exact token carries the meaning, such as a version number, a legal clause, a person's name, or an error code. Similar meaning is not always the same as the correct answer.
 
@@ -105,7 +107,7 @@ Keep the same authorization constraints across every stage. A high-scoring passa
 
 ## Where It Fits
 
-Hybrid retrieval is the selection layer between indexed content and a consumer such as a search page or an LLM.
+Hybrid retrieval is the selection layer between the keyword index, the vector index from [Embeddings and Semantic Search](embeddings-and-semantic-search.md), and a consumer such as a search page or an LLM.
 
 ```text
 Source content
@@ -156,7 +158,7 @@ Sparse retrieval finds the runbook containing the exact code. Dense retrieval al
 
 ## Next
 
-Next: Data Ingestion. It explains how source data is extracted, chunked, enriched, embedded, and indexed for retrieval.
+Next: [Data Ingestion](../ingestion/data-ingestion.md). It explains how source data is extracted, chunked, enriched, embedded, and indexed for retrieval.
 
 ## References
 
