@@ -137,7 +137,7 @@ Sparse and vector indexes
 Query-time retrieval
 ```
 
-This separation lets you rebuild indexes without changing the source of truth.
+This separation lets you rebuild indexes without changing the source of truth. It describes a static snapshot. When the source changes, see the [Editable Content and Reindexing](editable-content-and-reindexing.md) and [Data Synchronization](data-synchronization.md) subpages.
 
 ## Tradeoffs
 
@@ -175,7 +175,12 @@ Each chunk gets the handbook URL, section path, page number, audience, and a con
 
 ## Next
 
-Next: Editable Content and Reindexing. It explains how to keep these derived indexes correct when source content changes.
+Next: [Retrieval-Augmented Generation](../rag/retrieval-augmented-generation.md). It explains how indexed chunks become a grounded LLM answer.
+
+## Data Ingestion Subpages
+
+- [Editable Content and Reindexing](editable-content-and-reindexing.md): How a source edit, deletion, or index-configuration change updates derived chunks and indexes.
+- [Data Synchronization](data-synchronization.md): How change events, scheduled refreshes, reconciliation, and repair keep derived data current.
 
 ## References
 

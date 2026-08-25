@@ -8,3 +8,6 @@ A concise, sequential handbook for software engineers learning how to build AI s
 - [Embeddings and Semantic Search](retrieval/embeddings-and-semantic-search.md): How AI systems retrieve meaningfully related content. Covers embedding spaces, similarity measures, exact and approximate search, vector indexes, vector databases, and metadata filtering.
 - [Sparse, Dense, and Hybrid Retrieval](retrieval/sparse-dense-and-hybrid-retrieval.md): How retrieval systems match exact terms and meaning together. Covers BM25, dense retrieval, rank fusion, reranking, and retrieval pipelines.
 - [Data Ingestion](ingestion/data-ingestion.md): How source content becomes reliable retrieval data. Covers extraction, normalization, chunking, metadata, embeddings, indexing, and deduplication.
+  - [Editable Content and Reindexing](ingestion/editable-content-and-reindexing.md): How derived indexes respond safely to source edits, deletes, and global representation changes.
+  - [Data Synchronization](ingestion/data-synchronization.md): How event-driven updates, reconciliation, and repair keep derived retrieval data current.
+- [Retrieval-Augmented Generation](rag/retrieval-augmented-generation.md): How retrieved evidence becomes a grounded LLM answer. Covers retrieval, context construction, citations, failure diagnosis, and RAG evaluation.
