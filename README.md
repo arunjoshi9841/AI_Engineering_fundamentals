@@ -4,4 +4,4 @@ A concise, sequential handbook for software engineers learning how to build AI s
 
 ## Concepts
 
-Concepts will be added here as the handbook grows.
+- [LLM Fundamentals](foundations/llm-fundamentals.md): How an LLM turns a bounded input into generated output. Covers tokens, prompts and messages, context windows, sampling, structured outputs, and the limits of probabilistic generation.
