@@ -2,6 +2,20 @@
 
 A concise, sequential handbook for software engineers learning how to build AI systems.
 
+## How to Use This Handbook
+
+This handbook is for building a mental model, refreshing concepts, and getting started. It intentionally abstracts some implementation detail so the important engineering tradeoffs stay visible.
+
+Take time to implement these ideas yourself. A small retrieval pipeline, tool call, agent loop, or durable workflow teaches more than reading about it. Libraries can remove boilerplate, but they do not remove the need to understand state, permissions, retries, evaluation, and failure recovery.
+
+Useful tools and libraries to explore after learning the underlying concepts include:
+
+- **Agent and workflow orchestration:** [LangGraph](https://langchain-ai.github.io/langgraph/) and [LlamaIndex](https://docs.llamaindex.ai/)
+- **Retrieval and vector search:** [Qdrant](https://qdrant.tech/documentation/) and [pgvector](https://github.com/pgvector/pgvector)
+- **Long-running durable workflows:** [Temporal](https://docs.temporal.io/) and [Azure Durable Functions](https://learn.microsoft.com/en-us/azure/durable-functions/)
+
+These are examples, not required choices. Start with the smallest approach that lets you test the concept, then adopt an abstraction when it solves a problem you can explain.
+
 ## Concepts
 
 - [LLM Fundamentals](foundations/llm-fundamentals.md): How an LLM turns a bounded input into generated output. Covers tokens, prompts and messages, context windows, sampling, structured outputs, and the limits of probabilistic generation.
