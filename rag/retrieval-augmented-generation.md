@@ -154,7 +154,7 @@ If no passage describes the employee's region, the correct response is not a gen
 
 ## Next
 
-Next: [Editable Content and Reindexing](../ingestion/editable-content-and-reindexing.md). It explains how RAG remains trustworthy when its source documents change.
+Next: [Structured Outputs and Tool Calling](../tools/structured-outputs-and-tool-calling.md). It explains how an LLM can safely turn its response into application data and proposed actions.
 
 ## Go Deeper
 

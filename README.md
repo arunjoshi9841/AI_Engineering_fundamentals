@@ -11,3 +11,5 @@ A concise, sequential handbook for software engineers learning how to build AI s
   - [Editable Content and Reindexing](ingestion/editable-content-and-reindexing.md): How derived indexes respond safely to source edits, deletes, and global representation changes.
   - [Data Synchronization](ingestion/data-synchronization.md): How event-driven updates, reconciliation, and repair keep derived retrieval data current.
 - [Retrieval-Augmented Generation](rag/retrieval-augmented-generation.md): How retrieved evidence becomes a grounded LLM answer. Covers retrieval, context construction, citations, failure diagnosis, and RAG evaluation.
+- [Structured Outputs and Tool Calling](tools/structured-outputs-and-tool-calling.md): How an LLM returns reliable data and proposes application actions. Covers schemas, validation, authorization, retries, idempotency, and human confirmation.
+- [Agents](agents/agents.md): How a bounded LLM loop chooses actions from intermediate results. Covers state, planning, stopping conditions, handoffs, and when multi-agent systems help.
