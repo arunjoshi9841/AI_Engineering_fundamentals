@@ -15,4 +15,3 @@ A concise, sequential handbook for software engineers learning how to build AI s
 - [Agents](agents/agents.md): How a bounded LLM loop chooses actions from intermediate results. Covers state, planning, stopping conditions, handoffs, and when multi-agent systems help.
 - [Context Engineering and Memory](agents/context-engineering-and-memory.md): How an AI application selects a useful working set for each model call and safely manages state across tasks and sessions. Covers context budgets, compaction, short-term state, long-term memory, retrieval, and memory lifecycle.
   - [Calculating a Context Budget](agents/calculating-context-budgets.md): A worked token-budget and cost calculation using a real model's context and output limits.
-- [Event-Driven AI Systems](workflows/event-driven-ai-systems.md): How AI systems react reliably to changes. Covers webhooks, event delivery, queues, idempotency, ordering, schema evolution, fan-out, and dead-letter handling.

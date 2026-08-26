@@ -149,7 +149,7 @@ When an account manager confirms a renewal risk, the application records it as a
 
 ## Next
 
-Next: [Event-Driven AI Systems](../workflows/event-driven-ai-systems.md). It explains how AI work can begin or continue reliably when source changes, approvals, or background jobs produce events.
+Next: Long-Running and Durable AI Workflows. It explains how AI work persists safely across background work, restarts, and human approval.
 
 ## Go Deeper
 

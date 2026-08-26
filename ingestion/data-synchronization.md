@@ -40,7 +40,16 @@ The goal is usually eventual consistency with a known freshness target, not an u
 
 ### Change Detection
 
-Event-driven updates can use a source-system webhook, an application outbox, or change data capture, or CDC. CDC reads committed database changes and produces change events for inserts, updates, and deletes.
+Choose the trigger that fits the source. These are familiar integration techniques, so the important question here is how each one keeps derived retrieval data current.
+
+| Technique | Use it when |
+| --- | --- |
+| Polling | The source has no event API. Compare a cursor, timestamp, or content hash. |
+| Scheduled scan | You need a periodic refresh, reconciliation, or repair. |
+| Webhook | A SaaS product or CMS can promptly notify your application of a change. |
+| Change data capture (CDC) | A database is the source of truth and committed row changes should drive updates. |
+
+Event-driven updates can use a source-system webhook, an application outbox, or CDC. CDC reads committed database changes and produces change events for inserts, updates, and deletes.
 
 Events reduce freshness lag, but delivery is not a guarantee of correctness by itself. They can be delayed, duplicated, reordered, or lost before the consumer records them. Scheduled scans compare source versions or content hashes and provide a second path for finding missed changes.
 
