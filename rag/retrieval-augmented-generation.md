@@ -97,6 +97,8 @@ Evaluate the pipeline as components and end to end.
 
 Use real user questions and known answer sources. An answer that sounds helpful is not sufficient evidence that retrieval works.
 
+See [Evaluating RAG Systems](../evaluation/rag-evaluation.md) for a focused method that separates retrieval, context, and answer failures.
+
 ## Where It Fits
 
 RAG is a composition of the earlier concepts, not a replacement for them.

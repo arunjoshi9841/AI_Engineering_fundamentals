@@ -159,7 +159,7 @@ It then calls the provisioning service with the idempotency key `WF-42:grant-das
 
 ## Next
 
-Next: Evaluation. It asks whether the workflow, agent decisions, and final outcomes are actually correct and reliable.
+Next: [Evals: Measuring AI Systems](../evaluation/evals.md). It asks whether the workflow, agent decisions, and final outcomes are actually correct and reliable.
 
 ## Go Deeper
 
