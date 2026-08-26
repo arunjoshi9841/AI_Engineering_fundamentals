@@ -149,7 +149,7 @@ When an account manager confirms a renewal risk, the application records it as a
 
 ## Next
 
-Next: Long-Running and Durable AI Workflows. It explains how AI work persists safely across background work, restarts, and human approval.
+Next: [Long-Running and Durable AI Workflows](../workflows/long-running-and-durable-ai-workflows.md). It explains how AI work persists safely across background work, restarts, and human approval.
 
 ## Go Deeper
 
