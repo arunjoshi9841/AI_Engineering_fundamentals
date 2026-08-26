@@ -142,7 +142,7 @@ It summarizes the evidence and proposes a rollback. The application requires an 
 
 ## Next
 
-Next: Context Engineering and Memory. It explains how to manage finite context and durable state across longer agent tasks.
+Next: [Context Engineering and Memory](context-engineering-and-memory.md). It explains how to manage finite context and durable state across longer agent tasks.
 
 ## References
 
