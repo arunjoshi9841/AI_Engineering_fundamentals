@@ -136,7 +136,7 @@ If the provider continues failing, the circuit breaker opens. New requests are s
 
 ## Next
 
-Next: Observability. It makes request paths, model behavior, tool outcomes, and reliability safeguards visible enough to operate and improve the system.
+Next: [Observability for AI Systems](observability-for-ai-systems.md). It makes request paths, model behavior, tool outcomes, and reliability safeguards visible enough to operate and improve the system.
 
 ## References
 
