@@ -37,7 +37,7 @@ The repair is not a better prompt. The system needs a freshness objective, a das
 
 ### Interview direction
 
-Explain why the index is derived data, how tenant or employee permissions are enforced in retrieval, and how you would measure both retrieval quality and index freshness. This case builds on [Data Synchronization](../ingestion/data-synchronization.md) and [Retrieval-Augmented Generation](../rag/retrieval-augmented-generation.md).
+Explain why the index is derived data, how tenant or employee permissions are enforced in retrieval, and how you would measure both retrieval quality and index freshness. This case builds on [Index Maintenance and Synchronization](../ingestion/index-maintenance-and-synchronization.md) and [Retrieval-Augmented Generation](../rag/retrieval-augmented-generation.md).
 
 ## 2. Customer Support Copilot
 
