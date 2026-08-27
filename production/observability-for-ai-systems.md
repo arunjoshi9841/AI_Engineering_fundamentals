@@ -139,7 +139,7 @@ Trace review groups the affected requests by prompt version and retrieval index.
 
 ## Next
 
-Next: Caching. It reduces repeated AI work, but changes freshness, correctness, and observability requirements.
+Next: [Caching for AI Systems](caching.md). It reduces repeated AI work, but changes freshness, correctness, and observability requirements.
 
 ## References
 
