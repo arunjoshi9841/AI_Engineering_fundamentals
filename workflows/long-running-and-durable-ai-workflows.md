@@ -131,15 +131,21 @@ Use a fixed workflow when the path is known, such as a review followed by approv
 | Human approval waits | Control over consequential actions | Expiries, stuck work, and a slower user experience |
 | Persisted LLM decisions | Reliable continuation and auditability | Storage of sensitive task data and careful context reconstruction |
 
-## Failure Modes
+## What Can Go Wrong
 
-- **State only in memory:** A restart loses the current step or causes the workflow to repeat it blindly.
-- **Duplicate side effect:** A timeout after an external write leads to a second email, payment, or permission change.
-- **Wrong resume:** An approval or callback is correlated to the wrong workflow, stale step, or expired request.
-- **Stuck wait:** No timeout, alert, or owner exists for a workflow waiting on a person or external system.
-- **Stale authority:** The workflow uses the permissions captured at start even though access was revoked while it waited.
-- **Unrecorded model decision:** A resumed agent recreates a different plan because the accepted prior result was never stored.
-- **Unsafe definition change:** New code cannot interpret the state of an execution that began under an older version.
+**State only in memory.** A restart loses the current step or causes the workflow to repeat it blindly.
+
+**Duplicate side effect.** A timeout after an external write leads to a second email, payment, or permission change.
+
+**Wrong resume.** An approval or callback is correlated to the wrong workflow, stale step, or expired request.
+
+**Stuck wait.** No timeout, alert, or owner exists for a workflow waiting on a person or external system.
+
+**Stale authority.** The workflow uses the permissions captured at start even though access was revoked while it waited.
+
+**Unrecorded model decision.** A resumed agent recreates a different plan because the accepted prior result was never stored.
+
+**Unsafe definition change.** New code cannot interpret the state of an execution that began under an older version.
 
 ## Example
 

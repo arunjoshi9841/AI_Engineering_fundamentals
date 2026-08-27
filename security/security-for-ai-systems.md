@@ -104,15 +104,21 @@ User response ← output handling ← tool authorization ← proposed action
 | Input and output screening | Catches known unsafe patterns | False positives, false negatives, cost, and latency |
 | Detailed security logs | Investigation and incident response | Sensitive telemetry that must be minimized and protected |
 
-## Failure Modes
+## What Can Go Wrong
 
-- **Trusting prompt text as a permission system:** An injection asks for a forbidden action, and the model is the only layer that can refuse it.
-- **Filtering after retrieval:** The model already saw another tenant's document, even if the final answer hides it.
-- **A privileged service credential behind a user tool:** A model mistake becomes cross-user data access or an unwanted write.
-- **An open-ended tool:** A generic shell, URL fetcher, or database query grants far more capability than the feature requires.
-- **Blindly executing model output:** Generated HTML, SQL, paths, or tool arguments become an injection into the next system.
-- **Approval without useful context:** A user approves "send message" without seeing the recipient, content, or data being disclosed.
-- **Security checks evaluated only on normal prompts:** A document, email, or tool result supplies hostile instructions.
+**Trusting prompt text as a permission system.** An injection asks for a forbidden action, and the model is the only layer that can refuse it.
+
+**Filtering after retrieval.** The model already saw another tenant's document, even if the final answer hides it.
+
+**A privileged service credential behind a user tool.** A model mistake becomes cross-user data access or an unwanted write.
+
+**An open-ended tool.** A generic shell, URL fetcher, or database query grants far more capability than the feature requires.
+
+**Blindly executing model output.** Generated HTML, SQL, paths, or tool arguments become an injection into the next system.
+
+**Approval without useful context.** A user approves "send message" without seeing the recipient, content, or data being disclosed.
+
+**Security checks evaluated only on normal prompts.** A document, email, or tool result supplies hostile instructions.
 
 ## Example
 

@@ -118,16 +118,23 @@ typed progress and terminal events
 | Propagated cancellation | Lower wasted work and cost | More lifecycle coordination; cancellation may arrive late |
 | Stream tool status only | Honest progress without leaking internals | Less detailed UI |
 
-## Failure Modes
+## What Can Go Wrong
 
-- **Treating the last text chunk as success:** A stream can end because of a network error, safety stop, or output limit.
-- **Rendering provider events directly:** A provider upgrade or a tool-call fragment breaks the user interface or leaks internal data.
-- **Duplicate text after reconnect:** The client appends replayed events without sequence checks or reset logic.
-- **Retrying a broken connection as a new conversation turn:** The user sees two different partial answers merged together.
-- **Ignoring client disconnects:** The backend continues expensive generation for abandoned requests.
-- **Executing partial structured output:** An incomplete tool argument becomes a malformed or unintended action.
-- **Choosing fast display where safety needs buffering:** Harmful or sensitive text is shown before the check can intervene.
-- **No terminal event or saved final state:** The UI cannot distinguish a slow answer from one that was lost.
+**Treating the last text chunk as success.** A stream can end because of a network error, safety stop, or output limit.
+
+**Rendering provider events directly.** A provider upgrade or a tool-call fragment breaks the user interface or leaks internal data.
+
+**Duplicate text after reconnect.** The client appends replayed events without sequence checks or reset logic.
+
+**Retrying a broken connection as a new conversation turn.** The user sees two different partial answers merged together.
+
+**Ignoring client disconnects.** The backend continues expensive generation for abandoned requests.
+
+**Executing partial structured output.** An incomplete tool argument becomes a malformed or unintended action.
+
+**Choosing fast display where safety needs buffering.** Harmful or sensitive text is shown before the check can intervene.
+
+**No terminal event or saved final state.** The UI cannot distinguish a slow answer from one that was lost.
 
 ## Example
 

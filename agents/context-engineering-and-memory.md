@@ -57,7 +57,15 @@ Start with the information directly needed for the current step. For an agent, t
 
 Long-context models do not remove this design problem. More tokens cost more and can make relevant information harder to use among unrelated material.
 
-For a worked example with a real model limit, safety reserve, and cost calculation, see [Calculating a Context Budget](calculating-context-budgets.md).
+Use a simple budget calculation before each request:
+
+```text
+maximum input = context window - configured output limit
+operating budget = the smaller of maximum input and your cost/quality budget
+payload budget = operating budget - safety reserve
+```
+
+For example, if the operating budget is 128,000 tokens and 36,000 are reserved for unexpected tool output and formatting, the selected history, memories, retrieved evidence, and tool results must fit within 92,000 tokens. This is an operating target, not a reason to fill the entire model context. Count tokens with the model's tokenizer and measure actual usage in production.
 
 ### History, Summaries, and Tool Results
 
@@ -124,14 +132,19 @@ It builds on [RAG](../rag/retrieval-augmented-generation.md) and [Structured Out
 | Automatic memory writes | Less manual state handling | Incorrect or sensitive facts persist |
 | Explicit memory lifecycle | Privacy and correctness | More data-model and operational work |
 
-## Failure Modes
+## What Can Go Wrong
 
-- **Context overflow:** Fixed instructions, history, and tool results leave no room for the output or force important content out.
-- **Lost decision during compaction:** A summary omits an approval, constraint, or failed attempt, causing the agent to repeat unsafe work.
-- **Context pollution:** Broad retrieval or full transcripts bury the evidence needed for the next action.
-- **Stale or contradictory memory:** An old preference or policy remains after its source changed.
-- **Memory leak:** A memory retrieved without tenant, user, or permission checks exposes data from another scope.
-- **Poisoned memory:** Untrusted text or a model hallucination is stored as a durable fact and influences later tasks.
+**Context overflow.** Fixed instructions, history, and tool results leave no room for the output or force important content out.
+
+**Lost decision during compaction.** A summary omits an approval, constraint, or failed attempt, causing the agent to repeat unsafe work.
+
+**Context pollution.** Broad retrieval or full transcripts bury the evidence needed for the next action.
+
+**Stale or contradictory memory.** An old preference or policy remains after its source changed.
+
+**Memory leak.** A memory retrieved without tenant, user, or permission checks exposes data from another scope.
+
+**Poisoned memory.** Untrusted text or a model hallucination is stored as a durable fact and influences later tasks.
 
 ## Example
 

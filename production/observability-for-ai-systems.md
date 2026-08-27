@@ -113,15 +113,21 @@ It should be built into [RAG](../rag/retrieval-augmented-generation.md), tool ca
 | Broad sampling | Lower telemetry cost | Can miss the exact trace needed for an investigation |
 | Alerts on user symptoms | Useful on-call response | Requires clear service expectations and thresholds |
 
-## Failure Modes
+## What Can Go Wrong
 
-- **No shared trace ID:** Model, retrieval, tool, and worker logs cannot be assembled into one request story.
-- **Only infrastructure metrics:** The system looks healthy while it retrieves no evidence or gives unsupported answers.
-- **Only raw transcripts:** Storage becomes expensive, searches become noisy, and sensitive content is exposed without giving useful aggregates.
-- **Missing version context:** A prompt or model change causes regressions that cannot be isolated from traffic changes.
-- **Average-only dashboards:** Tail latency, rare tool failures, and high-cost requests remain hidden.
-- **Alert fatigue:** People are paged for every odd model response and stop trusting alerts.
-- **Telemetry as an ungoverned data store:** Prompts, outputs, secrets, or tenant data remain accessible longer than the application itself permits.
+**No shared trace ID.** Model, retrieval, tool, and worker logs cannot be assembled into one request story.
+
+**Only infrastructure metrics.** The system looks healthy while it retrieves no evidence or gives unsupported answers.
+
+**Only raw transcripts.** Storage becomes expensive, searches become noisy, and sensitive content is exposed without giving useful aggregates.
+
+**Missing version context.** A prompt or model change causes regressions that cannot be isolated from traffic changes.
+
+**Average-only dashboards.** Tail latency, rare tool failures, and high-cost requests remain hidden.
+
+**Alert fatigue.** People are paged for every odd model response and stop trusting alerts.
+
+**Telemetry as an ungoverned data store.** Prompts, outputs, secrets, or tenant data remain accessible longer than the application itself permits.
 
 ## Example
 

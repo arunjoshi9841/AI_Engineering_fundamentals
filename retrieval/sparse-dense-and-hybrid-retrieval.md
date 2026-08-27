@@ -133,14 +133,19 @@ The next topic, Data Ingestion, explains how source content becomes the chunks a
 | Reranking | Top-result precision | Extra latency and model cost |
 | Larger candidate pool | Chance of finding evidence | More downstream work and noise |
 
-## Failure Modes
+## What Can Go Wrong
 
-- **Exact-term blind spot:** Dense retrieval misses the relevant SKU, code, name, or version.
-- **Semantic near miss:** Dense retrieval finds a related topic, not the required policy, entity, or answer.
-- **Unsafe filters:** One retrieval branch uses weaker permission filters than the other.
-- **Score misuse:** Raw BM25 and vector scores are combined without calibration or a rank-based method.
-- **Reranking too little:** The relevant item never enters the candidate pool.
-- **Reranking too much:** A large candidate pool turns the precise stage into the latency bottleneck.
+**Exact-term blind spot.** Dense retrieval misses the relevant SKU, code, name, or version.
+
+**Semantic near miss.** Dense retrieval finds a related topic, not the required policy, entity, or answer.
+
+**Unsafe filters.** One retrieval branch uses weaker permission filters than the other.
+
+**Score misuse.** Raw BM25 and vector scores are combined without calibration or a rank-based method.
+
+**Reranking too little.** The relevant item never enters the candidate pool.
+
+**Reranking too much.** A large candidate pool turns the precise stage into the latency bottleneck.
 
 ## Example
 

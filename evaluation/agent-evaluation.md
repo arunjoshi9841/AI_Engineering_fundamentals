@@ -69,7 +69,7 @@ Measure limits alongside success: step count, tool-call count, latency, token us
 
 ## Where It Fits
 
-Agent evaluation builds on [Evaluation Design and Datasets](evaluation-design-and-datasets.md). It also validates the boundaries described in [Structured Outputs and Tool Calling](../tools/structured-outputs-and-tool-calling.md): the model proposes, while the application authorizes and executes.
+Agent evaluation builds on [Evals](evals.md). It also validates the boundaries described in [Structured Outputs and Tool Calling](../tools/structured-outputs-and-tool-calling.md): the model proposes, while the application authorizes and executes.
 
 ```text
 Versioned task and sandbox
@@ -92,14 +92,19 @@ Outcome checks, safety checks, and failure review
 | Exact trajectory matching | Easy automation | Brittle and rejects valid solutions |
 | Hard safety gates | Prevents unacceptable behavior | Can lower headline success rate |
 
-## Failure Modes
+## What Can Go Wrong
 
-- **Text-only grading:** The agent says it completed work but the final system state proves otherwise.
-- **Leaky sandbox:** The agent can pass by reading test-only hints or using capabilities unavailable in production.
-- **Unreset environment:** One trial changes state for the next, making results non-reproducible.
-- **Path overfitting:** A grader rejects a safe novel approach because it expected one tool order.
-- **Safety blind spot:** The suite tracks task success but never checks authorization, approvals, or destructive actions.
-- **Trace ignored:** Repeated loops and high-cost failures remain invisible behind an aggregate score.
+**Text-only grading.** The agent says it completed work but the final system state proves otherwise.
+
+**Leaky sandbox.** The agent can pass by reading test-only hints or using capabilities unavailable in production.
+
+**Unreset environment.** One trial changes state for the next, making results non-reproducible.
+
+**Path overfitting.** A grader rejects a safe novel approach because it expected one tool order.
+
+**Safety blind spot.** The suite tracks task success but never checks authorization, approvals, or destructive actions.
+
+**Trace ignored.** Repeated loops and high-cost failures remain invisible behind an aggregate score.
 
 ## Example
 

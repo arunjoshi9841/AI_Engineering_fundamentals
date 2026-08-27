@@ -134,13 +134,17 @@ This boundary matters. An LLM can classify a ticket or draft a reply. It should 
 | Structured output | Easier integration and parsing | Schema design and validation work |
 | Larger output limit | Room for complete answers | More latency and cost; still may ramble |
 
-## Failure Modes
+## What Can Go Wrong
 
-- **Confident but wrong output:** The model optimizes for a plausible continuation, not verified truth. Give it authoritative context where needed and evaluate important workflows.
-- **Context overflow or truncation:** Important instructions or history may not fit. Budget tokens before sending the request.
-- **Token surprises:** Code, tables, and multilingual text can be expensive despite a low word count.
-- **Format is valid, meaning is wrong:** A schema-matching JSON response can still contain an incorrect classification or invented value.
-- **Prompt and model changes alter behavior:** Version prompts and test representative cases.
+**Confident but wrong output.** The model optimizes for a plausible continuation, not verified truth. Give it authoritative context where needed and evaluate important workflows.
+
+**Context overflow or truncation.** Important instructions or history may not fit. Budget tokens before sending the request.
+
+**Token surprises.** Code, tables, and multilingual text can be expensive despite a low word count.
+
+**Format is valid, meaning is wrong.** A schema-matching JSON response can still contain an incorrect classification or invented value.
+
+**Prompt and model changes alter behavior.** Version prompts and test representative cases.
 
 ## Example
 

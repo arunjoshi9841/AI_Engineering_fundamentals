@@ -146,14 +146,19 @@ This separation is the prerequisite for [Agents](../agents/agents.md), where the
 | Human confirmation | Control over destructive actions | Extra user interaction and latency |
 | Parallel reads | Lower latency | Coordination complexity |
 
-## Failure Modes
+## What Can Go Wrong
 
-- **Valid but wrong arguments:** The output matches the schema but identifies the wrong customer or amount.
-- **Authorization bypass:** The application trusts the model's choice without checking the caller's permissions.
-- **Duplicate side effect:** A timeout triggers an unsafe retry of a write operation.
-- **Ambiguous tool result:** The tool returns prose that neither code nor the model can handle reliably.
-- **Overly broad tool:** A generic action interface gives the model far more authority than the task requires.
-- **Unconfirmed destructive action:** A chat instruction is treated as permission to delete, pay, or send.
+**Valid but wrong arguments.** The output matches the schema but identifies the wrong customer or amount.
+
+**Authorization bypass.** The application trusts the model's choice without checking the caller's permissions.
+
+**Duplicate side effect.** A timeout triggers an unsafe retry of a write operation.
+
+**Ambiguous tool result.** The tool returns prose that neither code nor the model can handle reliably.
+
+**Overly broad tool.** A generic action interface gives the model far more authority than the task requires.
+
+**Unconfirmed destructive action.** A chat instruction is treated as permission to delete, pay, or send.
 
 ## Example
 

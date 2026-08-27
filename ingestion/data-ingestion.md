@@ -137,7 +137,7 @@ Sparse and vector indexes
 Query-time retrieval
 ```
 
-This separation lets you rebuild indexes without changing the source of truth. It describes a static snapshot. When the source changes, see the [Editable Content and Reindexing](editable-content-and-reindexing.md) and [Data Synchronization](data-synchronization.md) subpages.
+This separation lets you rebuild indexes without changing the source of truth. It describes a static snapshot. When the source changes, continue with [Index Maintenance and Synchronization](index-maintenance-and-synchronization.md).
 
 ## Tradeoffs
 
@@ -150,14 +150,19 @@ This separation lets you rebuild indexes without changing the source of truth. I
 | Rich metadata | Filtering, citations, and debugging | Schema design and maintenance |
 | Aggressive deduplication | Less result repetition | Risk of collapsing meaningful variants |
 
-## Failure Modes
+## What Can Go Wrong
 
-- **Bad extraction:** OCR errors, lost table headers, or scrambled PDF columns make good retrieval impossible.
-- **Boilerplate pollution:** Navigation and repeated legal text become common high-ranking chunks.
-- **Broken context:** A chunk contains a conclusion but not the heading or condition that qualifies it.
-- **Missing metadata:** The system cannot cite the source, filter by tenant, or remove stale content later.
-- **Duplicate results:** Repeated exports or mirrored pages dominate retrieval.
-- **Untraceable derived data:** A result cannot be mapped back to a source document or ingestion version.
+**Bad extraction.** OCR errors, lost table headers, or scrambled PDF columns make good retrieval impossible.
+
+**Boilerplate pollution.** Navigation and repeated legal text become common high-ranking chunks.
+
+**Broken context.** A chunk contains a conclusion but not the heading or condition that qualifies it.
+
+**Missing metadata.** The system cannot cite the source, filter by tenant, or remove stale content later.
+
+**Duplicate results.** Repeated exports or mirrored pages dominate retrieval.
+
+**Untraceable derived data.** A result cannot be mapped back to a source document or ingestion version.
 
 ## Example
 
@@ -175,12 +180,7 @@ Each chunk gets the handbook URL, section path, page number, audience, and a con
 
 ## Next
 
-Next: [Retrieval-Augmented Generation](../rag/retrieval-augmented-generation.md). It explains how indexed chunks become a grounded LLM answer.
-
-## Data Ingestion Subpages
-
-- [Editable Content and Reindexing](editable-content-and-reindexing.md): How a source edit, deletion, or index-configuration change updates derived chunks and indexes.
-- [Data Synchronization](data-synchronization.md): How change events, scheduled refreshes, reconciliation, and repair keep derived data current.
+Next: [Index Maintenance and Synchronization](index-maintenance-and-synchronization.md). It explains how source changes keep derived chunks and indexes current.
 
 ## References
 

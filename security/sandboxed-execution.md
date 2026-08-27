@@ -89,15 +89,21 @@ For consequential work, the policy layer may require approval before it creates 
 
 Choose from the threat model, not latency alone. First decide the impact of an escape, wrong file read, or unexpected endpoint.
 
-## Failure Modes
+## What Can Go Wrong
 
-- **Sandbox in name only:** Generated code runs in the application worker, or a container has host mounts, a privileged mode, or a powerful socket attached.
-- **Secret leakage:** A general cloud credential, environment variable, or metadata endpoint gives the code access far beyond its assigned task.
-- **Open egress:** The job can upload inputs, scan internal services, download arbitrary payloads, or use external APIs without a policy decision.
-- **Resource exhaustion:** Infinite loops, fork bombs, oversized output, or decompression bombs exhaust shared CPU, memory, disk, or log storage.
-- **Cross-tenant residue:** A reused disk, cache, browser profile, or process exposes one task's data to another.
-- **Weak result boundary:** The application blindly renders HTML, executes returned commands, or trusts an output file path supplied by the sandbox.
-- **Assumed invulnerability:** A sandbox runtime vulnerability or configuration error permits an escape. Defense in depth and fast patching still matter.
+**Sandbox in name only.** Generated code runs in the application worker, or a container has host mounts, a privileged mode, or a powerful socket attached.
+
+**Secret leakage.** A general cloud credential, environment variable, or metadata endpoint gives the code access far beyond its assigned task.
+
+**Open egress.** The job can upload inputs, scan internal services, download arbitrary payloads, or use external APIs without a policy decision.
+
+**Resource exhaustion.** Infinite loops, fork bombs, oversized output, or decompression bombs exhaust shared CPU, memory, disk, or log storage.
+
+**Cross-tenant residue.** A reused disk, cache, browser profile, or process exposes one task's data to another.
+
+**Weak result boundary.** The application blindly renders HTML, executes returned commands, or trusts an output file path supplied by the sandbox.
+
+**Assumed invulnerability.** A sandbox runtime vulnerability or configuration error permits an escape. Defense in depth and fast patching still matter.
 
 ## Example
 
@@ -119,16 +125,9 @@ The script produces `chart.png` and a small JSON summary. The tool rejects other
 
 Next: [LLM Inference and Serving](../inference/llm-inference-and-serving.md). The same system must turn prompts into model output reliably, efficiently, and within capacity limits.
 
-## Go Deeper
-
-### WebAssembly as a Constrained Runtime
-
-WebAssembly runtimes can suit small, controlled extensions: a module must explicitly receive the host functions, directories, and network interfaces it can use. This can simplify capability design. It is not a universal replacement for a VM; compatibility, native dependencies, and the runtime's security model still matter.
-
 ## References
 
 - [OWASP: LLM06, Excessive Agency](https://genai.owasp.org/llmrisk/llm062025-excessive-agency/)
 - [NIST SP 800-190: Application Container Security Guide](https://csrc.nist.gov/pubs/sp/800/190/final)
 - [gVisor: What is gVisor?](https://gvisor.dev/docs/)
 - [Firecracker: Design and threat containment](https://github.com/firecracker-microvm/firecracker/blob/main/docs/design.md)
-- [Wasmtime: Security](https://docs.wasmtime.dev/security.html)

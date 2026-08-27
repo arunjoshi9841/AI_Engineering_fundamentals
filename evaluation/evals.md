@@ -60,6 +60,24 @@ A **test case** is one task with an input, any required context or environment, 
 
 Multiple trials matter when output is variable. A single successful answer can hide a task that works only half the time. Run enough trials to see whether a change is reliably better, especially before using a system for consequential work.
 
+### Design Cases Around User Outcomes
+
+Write the success criterion before changing the prompt or model. A useful case includes the input, the context or environment the system needs, the expected outcome, the constraints that must hold, and metadata for later slicing.
+
+```text
+input: "Can I carry vacation into next year?"
+context: employee is in France; policy version is 12
+expected: answer uses the France rule and cites section 4.2
+must not: use another region's policy or invent a rule
+slice: leave-policy / regional / high-visibility
+```
+
+Build the suite from ordinary work, ambiguous requests, risky boundaries, realistic bad inputs, and reviewed production failures. Include the source or policy version when it affects the answer. The goal is not a giant benchmark. It is a small suite where every case represents a user need, a risk, or a known failure.
+
+### Dataset Hygiene
+
+Keep a development set for iteration, a held-out set for honest comparison, and a regression set for failures that must not return. If the team repeatedly tunes against the holdout set, it has become a development set. Keep the source, review date, and expected behavior with each case so changing policies do not silently invalidate the result.
+
 ### Graders
 
 A grader scores one dimension of a result. Use the strongest available evidence:
@@ -72,6 +90,8 @@ A grader scores one dimension of a result. Use the strongest available evidence:
 | Human review | High-stakes, subjective, or domain-specific judgment | Slower and more expensive |
 
 An LLM judge is another model with its own error modes. Give it clear criteria and enough evidence, allow an "insufficient evidence" result, and regularly compare its grades with expert review.
+
+Exact matching is appropriate for outputs with one valid form, such as a classification label, calculation, or database state. For open-ended language, use a narrow rubric that checks separate claims or properties instead of requiring one exact sentence.
 
 ### Quality Is More Than One Score
 
@@ -117,14 +137,19 @@ The next pages make the loop concrete for [RAG](rag-evaluation.md) and [agents](
 | One aggregate score | Easy comparison | Hides risk-specific regressions |
 | Versioned suites and baselines | Reproducible decisions | Test-data and infrastructure discipline |
 
-## Failure Modes
+## What Can Go Wrong
 
-- **Demo-driven development:** The system is optimized for a few memorable prompts rather than representative work.
-- **Brittle grader:** A valid answer fails because it differs from one exact expected string.
-- **Weak proxy:** The suite measures style or lexical overlap instead of the user outcome that matters.
-- **Unrepresentative data:** Easy, synthetic, or stale cases overstate quality.
-- **Average hides a regression:** Overall score rises while a critical permission or safety slice fails.
-- **Eval saturation:** Every case passes, so the suite can detect regressions but no longer distinguishes better designs.
+**Demo-driven development.** The system is optimized for a few memorable prompts rather than representative work.
+
+**Brittle grader.** A valid answer fails because it differs from one exact expected string.
+
+**Weak proxy.** The suite measures style or lexical overlap instead of the user outcome that matters.
+
+**Unrepresentative data.** Easy, synthetic, or stale cases overstate quality.
+
+**Average hides a regression.** Overall score rises while a critical permission or safety slice fails.
+
+**Eval saturation.** Every case passes, so the suite can detect regressions but no longer distinguishes better designs.
 
 ## Example
 
@@ -142,7 +167,7 @@ When a prompt change improves the overall routing score but routes account-acces
 
 ## Next
 
-Next: [Evaluation Design and Datasets](evaluation-design-and-datasets.md). It explains how to make test cases and graders representative enough to trust.
+Next: [Evaluating RAG Systems](rag-evaluation.md). It applies the evaluation method to evidence retrieval, context construction, and grounded answers.
 
 ## References
 

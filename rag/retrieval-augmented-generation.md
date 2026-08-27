@@ -86,19 +86,6 @@ RAG has two distinct failure classes:
 
 Diagnose these separately. Changing the prompt cannot recover a missing policy passage, and raising retrieval `k` cannot make a model faithfully summarize conflicting evidence.
 
-### RAG Evaluation
-
-Evaluate the pipeline as components and end to end.
-
-- **Retrieval:** Did the top candidates contain the necessary source passage?
-- **Generation:** Is the answer correct, complete, and supported by the supplied passages?
-- **Citations:** Do citations point to the right source, and does that source support the claim?
-- **System behavior:** Does the pipeline respect permissions, latency targets, and freshness requirements?
-
-Use real user questions and known answer sources. An answer that sounds helpful is not sufficient evidence that retrieval works.
-
-See [Evaluating RAG Systems](../evaluation/rag-evaluation.md) for a focused method that separates retrieval, context, and answer failures.
-
 ## Where It Fits
 
 RAG is a composition of the earlier concepts, not a replacement for them.
@@ -117,7 +104,7 @@ Context for the LLM
 Answer with sources
 ```
 
-For static content, this pipeline can be built once. For changing content, the retrieval indexes must be kept synchronized with their sources. See [Editable Content and Reindexing](../ingestion/editable-content-and-reindexing.md) and [Data Synchronization](../ingestion/data-synchronization.md).
+For static content, this pipeline can be built once. For changing content, the retrieval indexes must be kept synchronized with their sources. See [Index Maintenance and Synchronization](../ingestion/index-maintenance-and-synchronization.md).
 
 ## Tradeoffs
 
@@ -129,14 +116,19 @@ For static content, this pipeline can be built once. For changing content, the r
 | Citations | User trust and debuggability | Source tracking and evaluation work |
 | Query rewriting or multi-query retrieval | Recall for ambiguous phrasing | Extra latency and possible query drift |
 
-## Failure Modes
+## What Can Go Wrong
 
-- **No answer in the index:** The source was not ingested, was stale, or cannot be found by the retrieval pipeline.
-- **Irrelevant context:** The model receives related passages that do not answer the question.
-- **Unsupported synthesis:** The model adds a claim that is not in the supplied sources.
-- **Citation mismatch:** The answer cites a real source that does not support the associated claim.
-- **Permission leak:** Unauthorized material enters the context or a citation reveals its existence.
-- **Stale answer:** Retrieval finds an old policy because the derived index has not caught up with its source.
+**No answer in the index.** The source was not ingested, was stale, or cannot be found by the retrieval pipeline.
+
+**Irrelevant context.** The model receives related passages that do not answer the question.
+
+**Unsupported synthesis.** The model adds a claim that is not in the supplied sources.
+
+**Citation mismatch.** The answer cites a real source that does not support the associated claim.
+
+**Permission leak.** Unauthorized material enters the context or a citation reveals its existence.
+
+**Stale answer.** Retrieval finds an old policy because the derived index has not caught up with its source.
 
 ## Example
 

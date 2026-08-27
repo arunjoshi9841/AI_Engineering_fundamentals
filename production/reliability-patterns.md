@@ -107,16 +107,23 @@ Retrieval ── Model ── Controlled tool
 | Fallback or degraded response | Keeps some user value during an outage | Lower quality or freshness; must be clearly communicated |
 | Queue and repair path | Absorbs delayed work and preserves evidence | Adds operational state, monitoring, and replay discipline |
 
-## Failure Modes
+## What Can Go Wrong
 
-- **Retrying every error:** Invalid requests and permission denials become noisy, expensive loops.
-- **Retries at several layers:** A browser, API, agent, and tool client each retry three times, multiplying one request into dozens of calls.
-- **Timeout treated as failure:** The original write succeeded, but the retry creates a second refund, ticket, or permission grant.
-- **No deadline propagation:** A backend spends resources on work after the original request has already failed.
-- **Fallback that lies:** The application labels an action complete when it only saved a draft or returned cached information.
-- **Open circuit with no recovery check:** A healthy dependency remains unnecessarily unavailable.
-- **Ignored repair queue:** Repeatedly failing work is preserved but never diagnosed, repaired, or replayed.
-- **Reliability confused with quality:** Retries make an unreliable model response arrive consistently, but do not make it correct, grounded, or safe.
+**Retrying every error.** Invalid requests and permission denials become noisy, expensive loops.
+
+**Retries at several layers.** A browser, API, agent, and tool client each retry three times, multiplying one request into dozens of calls.
+
+**Timeout treated as failure.** The original write succeeded, but the retry creates a second refund, ticket, or permission grant.
+
+**No deadline propagation.** A backend spends resources on work after the original request has already failed.
+
+**Fallback that lies.** The application labels an action complete when it only saved a draft or returned cached information.
+
+**Open circuit with no recovery check.** A healthy dependency remains unnecessarily unavailable.
+
+**Ignored repair queue.** Repeatedly failing work is preserved but never diagnosed, repaired, or replayed.
+
+**Reliability confused with quality.** Retries make an unreliable model response arrive consistently, but do not make it correct, grounded, or safe.
 
 ## Example
 

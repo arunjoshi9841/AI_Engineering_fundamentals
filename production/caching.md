@@ -99,15 +99,21 @@ Caching retrieval or tool reads may preserve quality better because the model st
 | Long TTL | More hits and lower cost | Larger staleness window |
 | Short TTL or frequent invalidation | Fresher values | More misses, source load, and implementation effort |
 
-## Failure Modes
+## What Can Go Wrong
 
-- **Key omits an input:** A response generated for one tenant, permission level, locale, or prompt version is served to another.
-- **Cached authorization:** A user keeps access after a role change because the result was not scoped or invalidated correctly.
-- **TTL mistaken for consistency:** A policy changes just after its answer is cached, and the application serves it until expiry.
-- **Semantic false hit:** A similar-looking request gets an answer that misses an important constraint.
-- **Cache stampede:** A popular key expires and many requests call the model or source at once.
-- **Cache outage overloads the source:** The fallback sends unlimited traffic to the dependency.
-- **Hit-rate tunnel vision:** The dashboard looks good while users receive stale answers or while per-user requests are never appropriate to cache.
+**Key omits an input.** A response generated for one tenant, permission level, locale, or prompt version is served to another.
+
+**Cached authorization.** A user keeps access after a role change because the result was not scoped or invalidated correctly.
+
+**TTL mistaken for consistency.** A policy changes just after its answer is cached, and the application serves it until expiry.
+
+**Semantic false hit.** A similar-looking request gets an answer that misses an important constraint.
+
+**Cache stampede.** A popular key expires and many requests call the model or source at once.
+
+**Cache outage overloads the source.** The fallback sends unlimited traffic to the dependency.
+
+**Hit-rate tunnel vision.** The dashboard looks good while users receive stale answers or while per-user requests are never appropriate to cache.
 
 ## Example
 

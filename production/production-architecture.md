@@ -52,7 +52,7 @@ Each boundary needs a clear contract. Retrieval returns authorized evidence and 
 
 A retrieval index is derived data optimized for search. The document store, business database, or external system remains authoritative for facts and permissions.
 
-The request path reads the index quickly while the update path keeps it current. Avoid synchronous chunking and embedding after every edit unless the product requires it. Instead, set a freshness expectation and run reconciliation. [Data Synchronization](../ingestion/data-synchronization.md) covers the update mechanics.
+The request path reads the index quickly while the update path keeps it current. Avoid synchronous chunking and embedding after every edit unless the product requires it. Instead, set a freshness expectation and run reconciliation. [Index Maintenance and Synchronization](../ingestion/index-maintenance-and-synchronization.md) covers the update mechanics.
 
 ### Synchronous Work and Durable Work Need Different Homes
 
@@ -98,16 +98,23 @@ For a read-only assistant, the tool and workflow branches may not exist. For an 
 | Central policy and tool gateway | Consistent authorization and audit | A critical dependency that needs availability and careful change control |
 | Strong release gates and version records | Safer changes and faster rollback | Evaluation effort and slower rollout for high-risk changes |
 
-## Failure Modes
+## What Can Go Wrong
 
-- **The model becomes the integration layer:** It receives broad credentials or direct database access, so an incorrect plan becomes an unauthorized action.
-- **The index is treated as truth:** Deleted, stale, or reclassified content remains retrievable because no source-change, deletion, or repair path exists.
-- **Authorization happens after context assembly:** Another tenant's evidence reaches the model, even if the final answer tries to hide it.
-- **A long task runs in the request handler:** A timeout or restart loses progress, while retries repeat external actions.
-- **A queue without a workflow record:** Messages are retried, but no one can determine the task's final state or repair an uncertain side effect.
-- **Components change independently without a contract:** A tool schema, prompt, index, or model update silently breaks a downstream consumer.
-- **Everything is split too early:** A small product acquires distributed-system failure modes before it has a real scaling, isolation, or ownership need.
-- **Operations see only uptime:** The service is available while retrieval is empty, citations are wrong, or an expensive route harms a meaningful user slice.
+**The model becomes the integration layer.** It receives broad credentials or direct database access, so an incorrect plan becomes an unauthorized action.
+
+**The index is treated as truth.** Deleted, stale, or reclassified content remains retrievable because no source-change, deletion, or repair path exists.
+
+**Authorization happens after context assembly.** Another tenant's evidence reaches the model, even if the final answer tries to hide it.
+
+**A long task runs in the request handler.** A timeout or restart loses progress, while retries repeat external actions.
+
+**A queue has no workflow record.** Messages are retried, but no one can determine the task's final state or repair an uncertain side effect.
+
+**Components change independently without a contract.** A tool schema, prompt, index, or model update silently breaks a downstream consumer.
+
+**Everything is split too early.** A small product acquires distributed-system failure modes before it has a real scaling, isolation, or ownership need.
+
+**Operations see only uptime.** The service is available while retrieval is empty, citations are wrong, or an expensive route harms a meaningful user slice.
 
 ## Example
 
@@ -129,7 +136,7 @@ Every path records safe identifiers for the prompt, model, index, tool, and work
 
 ## Next
 
-Next: System Design Case Studies. They apply these components and tradeoffs to concrete systems without re-teaching the underlying concepts.
+This closes the core handbook. Return to the [README](../README.md) to revisit a prerequisite or apply the ideas to a system of your own.
 
 ## References
 

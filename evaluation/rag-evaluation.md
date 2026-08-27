@@ -61,7 +61,7 @@ Also test non-quality constraints. A response with the right answer fails if it 
 
 ## Where It Fits
 
-RAG evaluation uses the cases and graders from [Evaluation Design and Datasets](evaluation-design-and-datasets.md). Its results point back to retrieval, ingestion, or prompt construction rather than treating RAG as one opaque model call.
+RAG evaluation uses the cases and graders from [Evals](evals.md). Its results point back to retrieval, ingestion, or prompt construction rather than treating RAG as one opaque model call.
 
 ```text
 Source and expected evidence
@@ -83,15 +83,17 @@ Fix the failing pipeline stage
 | More retrieved candidates | Better evidence recall | More noise, token cost, and latency |
 | Reference-free judge | Faster evaluation when answers vary | Must be calibrated with human review |
 
-## Failure Modes
+## What Can Go Wrong
 
-| Symptom | Likely cause | First place to investigate |
-| --- | --- | --- |
-| Necessary passage absent | Ingestion, filters, query handling, or retrieval recall | Source coverage and candidate retrieval |
-| Passage retrieved but absent from prompt | Reranking or context-budget decision | Final-context selection |
-| Passage present but answer is unsupported | Generation or answer instruction | Claim-level grounding and prompt behavior |
-| Correct answer but wrong citation | Source metadata or citation mapping | Citation construction and validation |
-| Good answer leaks data | Permission filter not enforced before context | Retrieval authorization path |
+**Necessary passage absent.** Investigate source coverage, filters, query handling, and candidate retrieval before changing the generation prompt.
+
+**Passage retrieved but absent from the prompt.** The reranker or context-budget decision may have removed the useful evidence. Inspect final-context selection.
+
+**Passage present but the answer is unsupported.** The generation step or answer instruction may be at fault. Check claim-level grounding and prompt behavior.
+
+**Correct answer but wrong citation.** Source metadata or citation mapping may be broken. Validate how source IDs become user-visible citations.
+
+**Good answer leaks data.** The permission filter was not enforced before context construction. Investigate the retrieval authorization path.
 
 ## Example
 

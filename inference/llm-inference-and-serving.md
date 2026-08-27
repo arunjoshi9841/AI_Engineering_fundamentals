@@ -105,16 +105,23 @@ Traces, latency, saturation, token, and cost signals
 | Quantized model | Lower memory use and possibly higher capacity | Potential quality or compatibility regression |
 | Separate prefill and decode pools | Better control of TTFT and TPOT under heavy load | Cache transfer, extra capacity planning, and more moving parts |
 
-## Failure Modes
+## What Can Go Wrong
 
-- **Sizing by average tokens per second:** The service passes a throughput test while interactive users see poor TTFT.
-- **Unbounded context:** Long conversations or retrieved documents consume KV cache and push ordinary requests into a queue or out-of-memory failure.
-- **No admission control:** The server accepts more active work than memory permits, then evicts or recomputes work under load.
-- **One queue for incompatible work:** Large batch jobs delay short interactive requests that need a strict latency target.
-- **Treating cancellation as only a client event:** The browser stops listening while the server continues generating and holding memory.
-- **Blind quantization rollout:** A smaller artifact fits the hardware but breaks structured output or a language slice.
-- **Version drift:** Model weights, tokenizer, runtime, or serving configuration change without comparable evaluation and rollback.
-- **Ignoring warmup:** A new replica receives traffic before weights are loaded and health checks prove it can serve the expected request shape.
+**Sizing by average tokens per second.** The service passes a throughput test while interactive users see poor TTFT.
+
+**Unbounded context.** Long conversations or retrieved documents consume KV cache and push ordinary requests into a queue or out-of-memory failure.
+
+**No admission control.** The server accepts more active work than memory permits, then evicts or recomputes work under load.
+
+**One queue for incompatible work.** Large batch jobs delay short interactive requests that need a strict latency target.
+
+**Treating cancellation as only a client event.** The browser stops listening while the server continues generating and holding memory.
+
+**Blind quantization rollout.** A smaller artifact fits the hardware but breaks structured output or a language slice.
+
+**Version drift.** Model weights, tokenizer, runtime, or serving configuration change without comparable evaluation and rollback.
+
+**Ignoring warmup.** A new replica receives traffic before weights are loaded and health checks prove it can serve the expected request shape.
 
 ## Example
 

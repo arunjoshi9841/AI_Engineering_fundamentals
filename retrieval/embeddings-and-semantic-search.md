@@ -131,14 +131,19 @@ The original text and metadata remain important. The vector is an indexable repr
 | Smaller chunks | More precise matches | Less context per result and more vectors |
 | Metadata filters | Relevance and isolation | More complex query planning; can lower ANN recall |
 
-## Failure Modes
+## What Can Go Wrong
 
-- **Model mismatch:** Index vectors and query vectors come from incompatible embedding models or versions.
-- **Metric mismatch:** The index uses a distance rule that does not match the vectors or normalization strategy.
-- **Semantic but unhelpful results:** The vectors capture a related topic rather than the exact entity, code, date, or policy the user needs.
-- **Missing evidence:** The right text was never indexed, was chunked badly, or was excluded by a filter.
-- **Permission leaks:** Filtering is missing or applied after unauthorized content has already entered an application path.
-- **Overconfident thresholds:** A score that worked for one corpus or model is treated as a universal relevance guarantee.
+**Model mismatch.** Index vectors and query vectors come from incompatible embedding models or versions.
+
+**Metric mismatch.** The index uses a distance rule that does not match the vectors or normalization strategy.
+
+**Semantic but unhelpful results.** The vectors capture a related topic rather than the exact entity, code, date, or policy the user needs.
+
+**Missing evidence.** The right text was never indexed, was chunked badly, or was excluded by a filter.
+
+**Permission leaks.** Filtering is missing or applied after unauthorized content has already entered an application path.
+
+**Overconfident thresholds.** A score that worked for one corpus or model is treated as a universal relevance guarantee.
 
 ## Example
 

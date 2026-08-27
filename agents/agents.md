@@ -117,14 +117,19 @@ The next topic, Context Engineering and Memory, explains how to keep the agent's
 | Larger step budget | More room for complex tasks | More latency, cost, and failure surface |
 | Human approval | Safety for high-impact actions | Slower completion |
 
-## Failure Modes
+## What Can Go Wrong
 
-- **Looping:** The agent repeats an unsuccessful action without a meaningful new observation.
-- **Wrong tool choice:** It selects a plausible tool that cannot answer the task or has an unsafe scope.
-- **State loss:** A restart forgets which actions completed and repeats side effects.
-- **Premature success:** The agent stops after finding a plausible answer without checking the task's success criteria.
-- **Unbounded delegation:** Subagents create more work and context than they resolve.
-- **Authority escalation:** A handoff or broad tool gives a subtask more access than the original user had.
+**Looping.** The agent repeats an unsuccessful action without a meaningful new observation.
+
+**Wrong tool choice.** It selects a plausible tool that cannot answer the task or has an unsafe scope.
+
+**State loss.** A restart forgets which actions completed and repeats side effects.
+
+**Premature success.** The agent stops after finding a plausible answer without checking the task's success criteria.
+
+**Unbounded delegation.** Subagents create more work and context than they resolve.
+
+**Authority escalation.** A handoff or broad tool gives a subtask more access than the original user had.
 
 ## Example
 

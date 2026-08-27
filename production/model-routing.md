@@ -99,15 +99,21 @@ Evals, dashboards, and controlled policy updates
 | Cascade with validation | Low average cost while preserving a stronger path | Extra latency and cost on escalated requests |
 | Broad model pool | More options for price and availability | More compatibility testing and governance |
 
-## Failure Modes
+## What Can Go Wrong
 
-- **Routing before eligibility:** A low-cost model receives a request it cannot safely process.
-- **“Simple” defined by prompt length:** A short legal, financial, or action-triggering request is routed below its required quality or control level.
-- **Unvalidated cascade:** The inexpensive model gives an incorrect answer that looks well formed, so escalation never happens.
-- **Optimization for the average:** Cost falls overall while one language, task, or customer tier has a sharp quality regression.
-- **Incompatible substitutions:** Model-specific prompts, schemas, or tool behavior change the application after a route change.
-- **Unbounded escalation:** A difficult request calls several models, misses the user deadline, and costs more than the original baseline.
-- **Incomplete feedback:** A router learns only from routes it chose and reinforces a bad preference for a cheaper model.
+**Routing before eligibility.** A low-cost model receives a request it cannot safely process.
+
+**“Simple” defined by prompt length.** A short legal, financial, or action-triggering request is routed below its required quality or control level.
+
+**Unvalidated cascade.** The inexpensive model gives an incorrect answer that looks well formed, so escalation never happens.
+
+**Optimization for the average.** Cost falls overall while one language, task, or customer tier has a sharp quality regression.
+
+**Incompatible substitutions.** Model-specific prompts, schemas, or tool behavior change the application after a route change.
+
+**Unbounded escalation.** A difficult request calls several models, misses the user deadline, and costs more than the original baseline.
+
+**Incomplete feedback.** A router learns only from routes it chose and reinforces a bad preference for a cheaper model.
 
 ## Example
 
