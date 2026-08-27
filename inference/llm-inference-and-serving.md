@@ -139,7 +139,7 @@ Tracing separates queue wait, prefill, and decode. It shows that large retrieved
 
 ## Next
 
-Next: [Production Architecture for AI Systems](../production/production-architecture.md). It combines the handbook's components into a system with clear boundaries, control paths, and operational ownership.
+Next: [Streaming AI Responses](../production/streaming-ai-responses.md). It explains how the application safely exposes token-by-token generation to users before the final result is ready.
 
 ## References
 

@@ -1,162 +1,102 @@
 # Streaming AI Responses
 
-[Model Routing](model-routing.md) chooses an appropriate model before work begins. Streaming changes what happens while that model is working: the application shows useful progress before the whole response is ready. The next concern is [Security](../security/security-for-ai-systems.md), which defines what the application may expose and act on.
+[LLM Inference and Serving](../inference/llm-inference-and-serving.md) explains why generation is incremental: after prefill, the model decodes output token by token. This page explains how an application exposes that work safely to a user. It leads into [Production Architecture](production-architecture.md), where streaming becomes one part of the request path.
 
 ## The Problem
 
-Generating a useful answer can take several seconds. If the server waits for the complete answer, a user may see an empty screen and assume the application is stuck, even when the model is making progress.
+An answer may take seconds to generate. Waiting for the final result makes a working application appear stuck. Streaming improves time to first useful feedback, but it means the user can see an incomplete answer, disconnect midway, or cancel while the model is still running.
 
-Sending partial output improves *time to first useful feedback*, but it changes the contract. The client can disconnect after seeing half an answer. A network can fail after the model has produced more text. A safety check may reject content that has already been displayed. An agent may be working on a tool call, where showing half-formed JSON as prose is confusing or unsafe.
-
-Streaming is therefore not just "send tokens sooner." It is a protocol and state-management decision for an incomplete result.
+The important design decision is not how to send tokens sooner. It is how to represent an incomplete response honestly.
 
 ## Mental Model
 
-Treat a streamed response as a short-lived sequence of typed events that reaches a terminal state.
+A stream is a short-lived, ordered lifecycle with an explicit final state.
 
 ```text
-request accepted
-      ↓
-status: searching
-      ↓
-text updates: "Your plan..."
-      ↓
-completed  OR  incomplete  OR  failed  OR  cancelled
+accepted → searching → text updates → completed
+                                  ↘ incomplete / failed / cancelled
 ```
 
-Text updates are provisional until the terminal event. The server remains the source of truth for the final status and saved conversation.
+Displayed text is provisional until a terminal event. The server, not the browser, owns the saved final result and response status.
 
-## How It Works
+## A Small Response Contract
 
-1. **Identify the task.** Create a response ID, validate input, and begin a trace before opening the stream.
-2. **Run the pipeline.** Convert provider chunks from retrieval, generation, tools, and safety checks into stable application events.
-3. **Send meaningful events.** Emit `started`, `text_delta`, `tool_status`, `completed`, `incomplete`, and `error`. Do not make the browser infer meaning from raw provider events.
-4. **Render and accumulate separately.** Show text as it arrives, but retain its sequence and final status. Text alone does not mean the answer completed.
-5. **Finish explicitly.** Send one terminal event with the response ID and finish reason. Persist the authoritative completed result before claiming success.
-6. **Handle interruption honestly.** Propagate cancellation when practical. On connection loss, replay retained events or show an interrupted answer. Never stitch together two independent attempts as if they were one answer.
+Normalize provider-specific chunks into a few typed application events:
 
 ```text
-Model provider stream
-          ↓
-Application: validate, moderate, normalize, record
-          ↓
-Client stream: status + displayable deltas + terminal event
-```
-
-## Important Concepts
-
-### Chunks Are Transport Units, Not Words
-
-A chunk may contain text, metadata, a tool-call fragment, or no user-visible text. Its boundary is controlled by the provider and network, not by grammar. Append only fields your application defines as displayable text.
-
-Buffer enough text to avoid a distracting character-by-character UI, but do not wait for the full answer. Measure time to first displayed text and total completion time.
-
-### A Small Application Event Contract
-
-Server-Sent Events (SSE) are a common fit for one-way server-to-browser updates. WebSockets help when the session needs frequent two-way messages. The transport matters less than a clear application contract.
-
-Keep that contract provider-neutral and typed. For example:
-
-```text
-started       response_id
-text_delta    sequence, text
-tool_status   tool name, safe progress label
-completed     final response ID, usage, citations
+started       response ID
+status        safe progress label
+text_delta    sequence number, displayable text
+completed     final response ID, citations, usage
 incomplete    reason, resumable?
-error         safe error code, retry guidance
+failed        safe error code, retry guidance
+cancelled     response ID
 ```
 
-Include increasing sequence numbers if the client may reconnect. SSE's `Last-Event-ID` only helps when *your application* retains events or a final result to replay. A provider connection cannot usually resume arbitrary generation after a browser reconnects.
+The transport can be Server-Sent Events for one-way browser updates or WebSockets when the client needs frequent two-way messages. The application contract matters more than the transport. Chunks can contain text, tool-call fragments, or metadata, so never render raw provider events directly.
 
-### Partial State, Cancellation, and Reconnection
+Use increasing sequence numbers if the client can reconnect. Reconnection can replay only events or final state that the application retained. It does not resume an arbitrary model-generation connection.
 
-Make `completed`, `incomplete`, `failed`, and `cancelled` distinct. Incomplete means the answer stopped early or a recoverable step did not finish. Failed means the system could not produce a usable result.
+## Handling Partial Work
 
-If the user presses Stop, abort upstream work when supported and mark the response cancelled. Cancellation may arrive late, so metering or audit data can still show generated work.
+1. Create a response ID and trace before opening the stream.
+2. Translate retrieval, model, tool, and safety activity into stable events.
+3. Persist the final result before emitting `completed`.
+4. On client cancellation or disconnect, abort upstream work when practical and record the terminal state.
+5. If a result did not complete, present it as interrupted and let the user start a new response. Do not merge two attempts into one answer.
 
-For short answers, show the saved final answer if it completed; otherwise show an interrupted state and let the user retry. Replay is worthwhile when restarting wastes meaningful time.
+Tool calls and structured output need a stricter rule: accumulate fragments privately, validate the complete value against its schema, then invoke the tool. Stream a safe status such as "Checking your reservation," not raw arguments or a predicted answer before evidence arrives.
 
-### Tools and Structured Output
-
-Tool calls and JSON are frequently streamed in fragments. Accumulate them out of view, validate the complete value against the [tool schema](../tools/structured-outputs-and-tool-calling.md), then decide whether to invoke the tool. Never execute a tool from a partial argument string, and never present internal tool arguments as user-facing progress.
-
-For an agent, stream honest status such as "Searching account records" or "Waiting for approval". Do not stream a predicted final answer while the system is still gathering evidence. The answer could change after the tool result arrives.
-
-### Safety Before and During Display
-
-Input controls still run before streaming begins. For output, there is a real choice:
-
-- **Buffer then check:** Screen a larger unit before display. This offers stronger control but delays the first visible text.
-- **Check incrementally:** Display sooner while checking chunks or short windows. This improves responsiveness but can expose unsafe text before a later intervention.
-
-High-risk domains should favor buffering, safe templates, or constrained output. If an output check intervenes, stop the stream and show a clear safe message. A later warning cannot undo content already copied or acted upon.
+Safety also changes the display choice. Buffering output before display gives stronger control but delays feedback. Incremental checks improve responsiveness but can expose content before a later intervention. Choose based on the harm of early exposure, and use constrained output or safe templates for high-risk features.
 
 ## Where It Fits
 
-Streaming sits at the response boundary and must reflect the state of the AI system.
-
 ```text
 Browser or app
-       ↕ cancellation / reconnect
-Application response service
-       ↓               ↑
-retrieve → model → tools → validate and moderate
+       ↕ cancellation and reconnect
+Response service
+       ↓
+retrieve → model decode → tools → validation
        ↓
 typed progress and terminal events
 ```
 
-[Reliability Patterns for AI Systems](reliability-patterns.md) supplies deadlines, cancellation, retries, and honest degraded behavior. [Observability for AI Systems](observability-for-ai-systems.md) records time to first event, disconnects, terminal reasons, and the full task trace. Streaming should expose progress, not bypass either system.
+[Reliability Patterns](reliability-patterns.md) supplies deadlines and honest recovery. [Observability](observability-for-ai-systems.md) records time to first event, disconnects, terminal reasons, and the task trace. Streaming must reflect those systems, not bypass them.
 
 ## Tradeoffs
 
-| Choice | What it improves | What it costs or risks |
+| Choice | Benefit | Cost or risk |
 | --- | --- | --- |
-| Stream text immediately | Perceived responsiveness | Partial, unverified content and more client state |
-| Buffer before displaying | Output-safety control and simpler final rendering | Worse time to first text |
-| Typed application events | Stable client behavior across providers | Event-design and compatibility work |
-| Event replay on reconnect | Better recovery for long work | Durable event storage, ordering, and retention concerns |
-| Propagated cancellation | Lower wasted work and cost | More lifecycle coordination; cancellation may arrive late |
-| Stream tool status only | Honest progress without leaking internals | Less detailed UI |
+| Display text immediately | Faster perceived response | Partial, unverified content and more client state |
+| Buffer before display | Stronger output control | Slower first visible feedback |
+| Typed events | Stable client behavior across providers | A contract to design and maintain |
+| Retain events for replay | Better reconnect experience | Storage, ordering, and retention work |
 
-## What Can Go Wrong
+## Failure Modes
 
-**Treating the last text chunk as success.** A stream can end because of a network error, safety stop, or output limit.
-
-**Rendering provider events directly.** A provider upgrade or a tool-call fragment breaks the user interface or leaks internal data.
-
-**Duplicate text after reconnect.** The client appends replayed events without sequence checks or reset logic.
-
-**Retrying a broken connection as a new conversation turn.** The user sees two different partial answers merged together.
-
-**Ignoring client disconnects.** The backend continues expensive generation for abandoned requests.
-
-**Executing partial structured output.** An incomplete tool argument becomes a malformed or unintended action.
-
-**Choosing fast display where safety needs buffering.** Harmful or sensitive text is shown before the check can intervene.
-
-**No terminal event or saved final state.** The UI cannot distinguish a slow answer from one that was lost.
+- Treating the last text chunk as success when the stream actually failed or hit a limit.
+- Rendering provider events directly, which leaks tool fragments or breaks after a provider change.
+- Duplicating text after reconnect because replay lacks sequence checks.
+- Continuing costly generation after the user leaves.
+- Executing incomplete JSON or tool arguments.
+- Claiming an interrupted answer completed.
 
 ## Example
 
-A travel assistant searches policy documents, then streams an answer about changing a ticket. It emits `started`, then `status: searching policies`, then ordered `text_delta` events. The booking tool is not shown as raw JSON; the UI says "Checking your reservation."
-
-The user closes the tab during generation. The server stops the model request and records cancellation. On return, the conversation shows an interrupted state, not a confirmed partial answer. A new request starts a new response ID.
+A travel assistant emits `started`, then `status: searching policies`, followed by ordered text updates. When it needs booking data, the UI shows "Checking your reservation" while the complete tool request is validated privately. If the user closes the tab, the server cancels the upstream request and records the response as cancelled. Returning to the conversation shows an interrupted answer, not a confirmed one.
 
 ## Interview Takeaways
 
-- Streaming reduces time to first useful feedback, but it turns one response into an ordered lifecycle with partial state.
-- Normalize provider chunks into typed application events and require an explicit terminal event.
-- A reconnect can replay only state the application retained; it does not automatically resume arbitrary generation.
-- Validate complete structured output before using it, and stream safe tool progress rather than raw arguments.
-- Output safety and fastest display are a deliberate tradeoff. Choose buffering or incremental checking according to the harm of early exposure.
+- Streaming turns one answer into an ordered lifecycle with partial and terminal states.
+- Use provider-neutral, typed events and preserve authoritative final state on the server.
+- Reconnection requires retained application state; it does not automatically resume generation.
+- Validate complete structured output before action, and choose buffering or incremental checks according to safety risk.
 
 ## Next
 
-Next: [Security for AI Systems](../security/security-for-ai-systems.md). It defines the trust boundaries, permissions, and data protections that streaming must respect.
+Next: [Production Architecture for AI Systems](production-architecture.md). It places streaming alongside retrieval, tools, workflows, security, and operations.
 
 ## References
 
 - [WHATWG HTML Standard: Server-Sent Events](https://html.spec.whatwg.org/multipage/server-sent-events.html)
-- [MDN: Using Server-Sent Events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events)
 - [OpenAI API Reference: Streaming Events](https://platform.openai.com/docs/api-reference/responses-streaming)
-- [Amazon Bedrock: Configure Streaming Response Behavior to Filter Content](https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-streaming.html)
