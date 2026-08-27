@@ -136,7 +136,7 @@ Every path records safe identifiers for the prompt, model, index, tool, and work
 
 ## Next
 
-This closes the core handbook. Return to the [README](../README.md) to revisit a prerequisite or apply the ideas to a system of your own.
+Next: [System Design Case Studies](../case-studies/system-design-case-studies.md). They apply these components and tradeoffs to concrete systems without re-teaching the underlying concepts.
 
 ## References
 
