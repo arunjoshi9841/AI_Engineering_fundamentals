@@ -117,7 +117,7 @@ The agent may look up the customer before the order or the order before the poli
 
 ## Next
 
-Next: Reliability. It turns known failure modes into timeouts, retries, fallbacks, and operational safeguards.
+Next: [Reliability Patterns for AI Systems](../production/reliability-patterns.md). It turns known failure modes into timeouts, retries, fallbacks, and operational safeguards.
 
 ## References
 

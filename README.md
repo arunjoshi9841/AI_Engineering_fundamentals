@@ -34,3 +34,4 @@ These are examples, not required choices. Start with the smallest approach that 
   - [Evaluation Design and Datasets](evaluation/evaluation-design-and-datasets.md): How to build representative cases, define success, choose graders, and maintain development, holdout, and regression sets.
   - [Evaluating RAG Systems](evaluation/rag-evaluation.md): How to measure evidence retrieval, context quality, grounded answers, citations, permissions, and freshness separately.
   - [Evaluating Agents](evaluation/agent-evaluation.md): How to test multi-step tool use through controlled environments, final-state checks, traces, constraints, and repeated trials.
+- [Reliability Patterns for AI Systems](production/reliability-patterns.md): How AI systems handle operational failure without duplicating actions, hiding outages, or losing repairable work. Covers deadlines, selective retries, idempotency, circuit breakers, safe degradation, queues, and repair.
