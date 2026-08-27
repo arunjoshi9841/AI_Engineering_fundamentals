@@ -129,7 +129,7 @@ Every path records safe identifiers for the prompt, model, index, tool, and work
 
 ## Next
 
-Next: System Design Case Studies. They apply these components and tradeoffs to concrete systems without re-teaching the underlying concepts.
+Next: [System Design Case Studies](../case-studies/system-design-case-studies.md). They apply these components and tradeoffs to concrete systems without re-teaching the underlying concepts.
 
 ## References
 
